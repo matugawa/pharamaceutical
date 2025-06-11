@@ -1,0 +1,12 @@
+#root {
+  background-color: #F5F6FA;
+  min-width: 100vw;
+  min-height: 100vh;
+}
+
+.appContainer{
+  
+  border: solid 5px green;
+  display: flex;
+  flex-direction: column;
+}

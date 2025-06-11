@@ -1,0 +1,59 @@
+{
+  "name": "pharmaceutical-client",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "start": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "relay": "relay-compiler"
+  },
+  "relay": {
+    "src": "./src",
+    "schema": "./data/schema.graphql",
+    "language": "typescript",
+    "eagerEsModules": true,
+    "exclude": [
+      "**/node_modules/**",
+      "**/__mocks__/**",
+      "**/__generated__/**"
+    ]
+  },
+  "dependencies": {
+    "dompurify": "^3.2.5",
+    "graphql": "^16.8.1",
+    "prettier": "^0.0.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-helmet-async": "^2.0.5",
+    "react-relay": "^16.2.0",
+    "react-router-dom": "^6.25.0",
+    "relay-runtime": "^16.2.0",
+    "@types/node": "^20.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.15.0",
+    "@tailwindcss/typography": "^0.5.16",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react-swc": "^3.6.0",
+    "autoprefixer": "^10.4.14",
+    "eslint": "^9.15.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.14",
+    "globals": "^15.12.0",
+    "postcss": "^8.4.24",
+    "prettier": "^3.3.2",
+    "relay-compiler": "^16.2.0",
+    "tailwindcss": "^3.4.1",
+    "typescript": "~5.6.2",
+    "typescript-eslint": "^8.15.0",
+    "vite": "^6.0.1",
+    "vite-plugin-relay": "^2.1.0",
+    "@types/react-relay": "^14.1.2",
+    "@types/relay-runtime": "^14.1.23"
+  }
+}

@@ -1,0 +1,7 @@
+.base{
+    display: flex;
+  }
+
+  .appContainer {
+    padding-bottom: 100px; /* フッター分のスペースを確保 */
+  }

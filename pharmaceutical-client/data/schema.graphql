@@ -1,0 +1,35 @@
+type Ingredient {
+  ingredient: String!
+  pharmaceuticals: [Pharmaceutical!]!
+}
+
+type IngredientList {
+  ingredients: [Ingredient!]!
+}
+
+type Pharmaceutical {
+  category: String
+  drugCode: String
+  ingredient: String
+  specification: String
+  product: String
+  manufacturer: String
+  eligibleGeneric: String
+  brandGeneric: String
+  brandGenericWithGeneric: String
+  price: Float
+  expiraryDate: String
+  remarks: String
+  previousePrice: Float
+}
+
+input PharmaceuticalSearch {
+  category: String
+  searchName: String!
+  specification: String
+}
+
+type Query {
+  test: String!
+  pharmaceutical(search: PharmaceuticalSearch!): IngredientList!
+}

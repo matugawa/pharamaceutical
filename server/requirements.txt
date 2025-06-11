@@ -1,0 +1,15 @@
+argparse
+asyncpg
+fastapi>=0.100.0
+jaconv
+openpyxl
+pandas
+psycopg2
+playwright
+python-dotenv
+requests
+
+strawberry-graphql[fastapi]>=0.221
+
+
+uvicorn[standard]

@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:latest
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env.development
+    ports:
+      - "5432:5432"
+
+  pharmaceutical:
+    image: node:20
+    volumes:
+      - ./pharmaceutical-client:/app
+      - pharmaceutical_node_modules:/app/node_modules
+    working_dir: /app
+    command: sh -c "npm start"
+    ports:
+      - "3301:3301"
+
+  server:
+    build:
+      context: ./server/
+      dockerfile: Dockerfile
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./server:/server
+    depends_on:
+      - db
+      - pharmaceutical
+    stdin_open: true
+    command: python index.py
+    env_file:
+      - .env.development
+
+volumes:
+  postgres_data:
+  pharmaceutical_node_modules:

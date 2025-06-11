@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:latest
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env.production
+    ports:
+      - "5432:5432"
+
+  server:
+    build:
+      context: ./server/
+      dockerfile: Dockerfile
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./server:/server
+    depends_on:
+      - db
+    stdin_open: true
+    command: python index.py
+    env_file:
+      - .env.production
+
+volumes:
+  postgres_data:
