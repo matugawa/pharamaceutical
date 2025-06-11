@@ -25,3 +25,10 @@ logs/
 
 # datas
 raw-datas/
+
+# ---------------------------
+# ここから例外（追記する）
+# ---------------------------
+# Frontend 用 .env はバージョン管理に含める
+!pharmaceutical-client/.env.production
+!pharmaceutical-client/.env.development

@@ -1,0 +1,51 @@
+name: Deploy Backend
+
+on:
+  push:
+    paths:
+      - 'server/**'
+      - 'docker-compose.product.yml'
+      - '.github/workflows/deploy-backend.yml'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. GitHubリポジトリをチェックアウト
+      - uses: actions/checkout@v3
+
+      # 2. VPS上の旧serverディレクトリを削除（.env は残す）
+      - name: Clean old server on VPS
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            rm -rf ~/app/server
+
+      # 3. server/ と docker-compose.product.yml を転送
+      - name: Copy backend files to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key:   ${{ secrets.VPS_SSH_KEY }}
+          source: |
+            server/**
+            docker-compose.product.yml
+          target: ~/app/
+
+      # 4. 再ビルド & 再起動 & 不要なイメージ削除
+      - name: Rebuild and restart backend
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key:   ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            cd ~/app
+            docker-compose -f docker-compose.product.yml down
+            docker-compose -f docker-compose.product.yml up -d --build
+            docker image prune -f
