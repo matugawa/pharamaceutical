@@ -1,0 +1,57 @@
+name: Deploy Frontend
+
+on:
+  push:
+    paths:
+      - 'pharmaceutical-client/**'
+      - '.github/workflows/deploy-frontend.yml'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: pharmaceutical-client
+      
+      # 環境依存ないのでdocker外でbuild
+      - name: Build
+        run: npm run build
+        working-directory: pharmaceutical-client
+
+      - name: Cleanup and copy dist to VPS (~/dist-temp)
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            rm -rf ~/dist-temp/*
+      
+      - name: Copy dist to VPS (~/dist-temp)
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          source: "pharmaceutical-client/dist/*"
+          target: "~/dist-temp/"
+
+      - name: Deploy on VPS
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            sudo rm -rf /var/www/html/*
+            sudo cp -r ~/dist-temp/* /var/www/html/
+            sudo nginx -t && sudo systemctl reload nginx
