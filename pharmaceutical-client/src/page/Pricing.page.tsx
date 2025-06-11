@@ -142,7 +142,7 @@ export const Pricing = () => {
   return (
     <>
       <Helmet>
-        <title>薬価サーチ - 医薬品薬科検索サイト</title>
+        <title>薬価サーチ - 医薬品薬価検索サイト</title>
         <meta
           name="description"
           content="医薬品の薬価、メーカー、規格などをすばやく検索できるサイト。禁忌情報や添付文書PDFも確認可能。"
@@ -177,6 +177,7 @@ export const Pricing = () => {
       <div className="min-h-screen flex flex-col bg-[#f8fafc]">
         {/* Header */}
         <header className="text-center py-12">
+        <div className="text-red-600 font-bold mb-2 inline-block">2025/04/16 更新</div>
           <h1 className="text-5xl font-extrabold text-blue-800 tracking-wide">
             薬価サーチ
           </h1>
